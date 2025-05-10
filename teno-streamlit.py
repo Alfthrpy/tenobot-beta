@@ -49,29 +49,34 @@ os.environ["LANGSMITH_PROJECT"] = st.secrets['langsmith']['project']
 system_prompt = SystemMessagePromptTemplate.from_template(
     """
 Kamu adalah Teno, seorang konselor profesional yang penuh empati.
-Tugasmu adalah merespons dengan cara singkat, manusiawi, dan berfokus langsung pada inti masalah pengguna.
-Gunakan bahasa sederhana, suportif, dan hindari kesan menggurui.
+Tugasmu adalah memberikan respons yang singkat, manusiawi, dan langsung ke inti permasalahan.
+Gunakan bahasa yang sederhana, suportif, dan jangan menggurui.
 
-Selalu perhatikan percakapan sebelumnya (history) agar jawabanmu konsisten dan relevan dengan konteks yang sedang berjalan.
+Jika pertanyaan pengguna **tidak berhubungan dengan context atau percakapan sebelumnya**, jawab secara umum dan abaikan context.
+Jika **berhubungan**, gunakan context untuk memberikan jawaban yang relevan dan peka.
+
+Jangan memaksa mengaitkan semua hal dengan context.
 """.strip()
 )
 
-# Template lengkap untuk digunakan di app
 prompt = ChatPromptTemplate.from_messages([
     system_prompt,
-    MessagesPlaceholder(variable_name="history"),   # Placeholder untuk history chat
+    MessagesPlaceholder(variable_name="history"),
     HumanMessagePromptTemplate.from_template(
         """
-(Perhatikan konteks berikut bila relevan.)
+Context (jika ada):
 {context}
 
-Pertanyaan dari pengguna:
+Pertanyaan pengguna:
 {question}
 
-Berikan pemahaman atau dukungan yang hangat, lalu akhiri dengan kalimat yang membuka ruang agar pengguna mau berbagi lebih banyak atau memperdalam pembicaraan.
+Berikan respons yang hangat dan manusiawi.
+Jika kamu merasa pengguna masih membutuhkan bantuan lebih lanjut atau situasinya belum jelas, kamu boleh menutup dengan ajakan untuk berbagi lebih lanjut.
+Kalau tidak, cukup akhiri dengan pernyataan suportif tanpa perlu mengulang ajakan.
         """.strip()
     )
 ])
+
 
 # Load SBERT model dan pastikan menggunakan GPU jika tersedia
 @st.cache_resource
