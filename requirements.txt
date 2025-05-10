@@ -8,3 +8,4 @@ streamlit==1.45.0
 torch==2.6.0
 typing_extensions==4.13.2
 langchain-community
+langchain-google-genai
