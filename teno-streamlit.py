@@ -41,7 +41,7 @@ def check_api_key():
     return api_key
 
 # Set LangSmith environment variables
-os.environ["LANGSMITH_TRACING_V2"] = st.secrets['langsmith']['tracing']
+os.environ["LANGSMITH_TRACING_V2"] = 'true'
 os.environ["LANGSMITH_API_KEY"] = st.secrets['langsmith']['api_key']
 os.environ["LANGSMITH_PROJECT"] = st.secrets['langsmith']['project']
 
