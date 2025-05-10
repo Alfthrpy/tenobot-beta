@@ -34,16 +34,16 @@ st.set_page_config(
 
 # Check for API key
 def check_api_key():
-    api_key = os.getenv("GEMINI_API_KEY")
+    api_key =st.secrets["gemini"]["api_key"]
     if api_key is None:
         st.error("GEMINI_API_KEY belum diatur. Mohon periksa file .env Anda.")
         st.stop()
     return api_key
 
 # Set LangSmith environment variables
-os.environ["LANGSMITH_TRACING_V2"] = os.getenv("LANGSMITH_TRACING", "true")
-os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
-os.environ["LANGSMITH_PROJECT"] = os.getenv("LANGSMITH_PROJECT")
+os.environ["LANGSMITH_TRACING_V2"] = st.secrets['langsmith']['tracing']
+os.environ["LANGSMITH_API_KEY"] = st.secrets['langsmith']['api_key']
+os.environ["LANGSMITH_PROJECT"] = st.secrets['langsmith']['project']
 
 # System prompt: mendefinisikan "Teno" konselor profesional
 system_prompt = SystemMessagePromptTemplate.from_template(
